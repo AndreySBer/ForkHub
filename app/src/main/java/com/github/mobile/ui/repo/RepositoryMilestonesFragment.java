@@ -34,6 +34,7 @@ import com.github.mobile.ui.milestone.MilestoneViewActivity;
 import com.google.inject.Inject;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 
 import org.eclipse.egit.github.core.Repository;
@@ -81,7 +82,13 @@ public class RepositoryMilestonesFragment extends ItemListFragment<Milestone> {
     private List<Milestone> convertMilestonesList(List<org.eclipse.egit.github.core.Milestone> milestoneList) {
         List<Milestone> newList = new ArrayList<Milestone>();
         for (org.eclipse.egit.github.core.Milestone m : milestoneList) {
-            newList.add(new Milestone(m));
+            Milestone milestone = new Milestone(m);
+            //fix the retrofit bug here
+            Calendar c = Calendar.getInstance();
+            c.setTime(milestone.due_on);
+            c.add(Calendar.DATE, 1);
+            milestone.due_on = c.getTime();
+            newList.add(milestone);
         }
         return newList;
 
