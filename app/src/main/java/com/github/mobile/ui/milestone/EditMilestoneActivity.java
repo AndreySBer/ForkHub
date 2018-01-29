@@ -302,6 +302,11 @@ public class EditMilestoneActivity extends DialogFragmentActivity {
                             super.onSuccess(editedMilestone);
 
                             Intent intent = new Intent();
+                            //fix the retrofit bug here
+                            Calendar c = Calendar.getInstance();
+                            c.setTime(editedMilestone.due_on);
+                            c.add(Calendar.DATE, 1);
+                            editedMilestone.due_on = c.getTime();
                             intent.putExtra(EXTRA_MILESTONE, editedMilestone);
                             setResult(RESULT_OK, intent);
                             finish();
